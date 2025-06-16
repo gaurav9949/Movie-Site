@@ -3,7 +3,6 @@ import Spinner from "./components/spinner.jsx";
 import MovieCard from "./components/MovieCard.jsx";
 
 const API_BASE_URL = "https://api.themoviedb.org/3";
-
 const API_KEY = import.meta.env.VITE_TMDB_API_KEY;
 
 const API_OPTIONS = {
@@ -19,14 +18,16 @@ const App = () => {
   const [errorMessage, setErrorMessage] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [movieList, setMovieList] = useState([]);
+
   const fetchMovies = async (query = "") => {
     setIsLoading(true);
     setErrorMessage("");
 
     try {
-      const endpoint = `${API_BASE_URL}/search/movie?api_key=${API_KEY}&query=${encodeURIComponent(
-        query
-      )}`;
+      // Use /search/movie for searching, /discover/movie for general listing
+      const endpoint =
+        "https://api.themoviedb.org/3/discover/movie?include_adult=false&include_video=false&language=en-US&page=1&sort_by=popularity.desc";
+
       const response = await fetch(endpoint, API_OPTIONS);
 
       if (!response.ok) {
@@ -49,7 +50,7 @@ const App = () => {
       setIsLoading(false);
     }
   };
-  console.log(alert);
+
   useEffect(() => {
     fetchMovies();
   }, []);
